@@ -18,6 +18,12 @@ if [ -z ${_microarchitecture+x} ]; then
   _microarchitecture=0
 fi
 
+CONFIG_ASHMEM=m 
+CONFIG_ANDROID=y
+CONFIG_ANDROID_BINDER_IPC=m
+CONFIG_ANDROID_BINDERFS=n
+CONFIG_ANDROID_BINDER_DEVICES="binder,hwbinder,vndbinder"
+
 ## Disable NUMA since most users do not have multiple processors. Breaks CUDA/NvEnc.
 ## Archlinux and Xanmod enable it by default.
 ## Set variable "use_numa" to: n to disable (possibly increase performance)
@@ -131,6 +137,11 @@ prepare() {
     _LLVM=1
   fi
 
+  scripts/config --module  CONFIG_ASHMEM
+  scripts/config --enable  CONFIG_ANDROID
+  scripts/config --enable  CONFIG_ANDROID_BINDER_IPC
+  scripts/config --enable  CONFIG_ANDROID_BINDERFS
+  scripts/config --set-str CONFIG_ANDROID_BINDER_DEVICES ""
   # CONFIG_STACK_VALIDATION gives better stack traces. Also is enabled in all official kernel packages by Archlinux team
   scripts/config --enable CONFIG_STACK_VALIDATION
 
@@ -200,7 +211,7 @@ prepare() {
 
 build() {
   cd linux-${_major}
-  make LLVM=$_LLVM LLVM_IAS=$_LLVM all
+  make LLVM=$_LLVM LLVM_IAS=$_LLVM all -j16
 }
 
 _package() {
