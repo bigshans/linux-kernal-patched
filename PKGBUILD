@@ -69,7 +69,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-cacule
 _major=5.14
-pkgver=${_major}.10
+pkgver=${_major}.11
 _branch=5.x
 xanmod=1
 pkgrel=${xanmod}
@@ -106,7 +106,7 @@ done
 
 sha256sums=('7e068b5e0d26a62b10e5320b25dce57588cbbc6f781c090442138c9c9c3271b2'
             'SKIP'
-            '9a90c13fac25755615ef658ad52ac99e55327c022f69e01e04e2d742947bdb36'
+            '006d53e6b5110fe4fd1c3b7b49d5310bab6afd453c9f8c2e2467eb41e2dd9110'
             'SKIP'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
