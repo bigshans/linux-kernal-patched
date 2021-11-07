@@ -1,8 +1,8 @@
-# Linux-Xanmod-Caucle-Anbox-Cjktty
+# Linux-Xanmod-Cacule-Anbox-Cjktty
 
 ## Introduction
 
-This is my personal linux-xanmod-caucle kernel repository. I made a little modification to the linux-xanmod-caucle package. If you want to use it, please note that this will overwrite the original package.
+This is my personal linux-xanmod-cacule kernel repository. I made a little modification to the linux-xanmod-cacule package. If you want to use it, please note that this will overwrite the original package.
 
 ## Differences from Linux-Xanmod-Caucle
 
