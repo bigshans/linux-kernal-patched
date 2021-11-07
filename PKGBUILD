@@ -67,13 +67,13 @@ _makenconfig=
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
-pkgbase=linux-xanmod-cacule
-_major=5.14
-pkgver=${_major}.16
+pkgbase=linux-xanmod-tt
+_major=5.15
+pkgver=${_major}.1
 _branch=5.x
 xanmod=1
 pkgrel=${xanmod}
-pkgdesc='Linux Xanmod. Branch with Cacule scheduler by Hamad Marri'
+pkgdesc='Linux Xanmod. Branch with TT scheduler by Hamad Marri'
 url="http://www.xanmod.org/"
 arch=(x86_64)
 
@@ -88,7 +88,7 @@ options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
-        "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}-cacule/patch-${pkgver}-xanmod${xanmod}-cacule.xz"
+        "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}-tt/patch-${pkgver}-xanmod${xanmod}-tt.xz"
         "https://github.com/HougeLangley/customkernel/releases/download/v${_major}-others/v1-cjktty-${_major}.patch"
         choose-gcc-optimization.sh)
 validpgpkeys=(
@@ -104,9 +104,9 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('7e068b5e0d26a62b10e5320b25dce57588cbbc6f781c090442138c9c9c3271b2'
+sha256sums=('SKIP'
             'SKIP'
-            '3dae99c6d03c58c69edc8491681abec1b8006bedf9e430e5efa2248cfc756755'
+            'SKIP'
             'SKIP'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
@@ -118,7 +118,7 @@ prepare() {
   cd linux-${_major}
 
   # Apply Xanmod patch
-  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}-cacule
+  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}-tt
 
   msg2 "Setting version..."
   scripts/setlocalversion --save-scmversion
