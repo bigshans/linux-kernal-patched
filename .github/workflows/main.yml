@@ -7,6 +7,9 @@ jobs:
   build_for_arch:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - name: Build linux-xanmod-tt-cjktty for arch
         uses: antman666/build-aur-action@mine
         with:
