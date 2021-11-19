@@ -10,4 +10,4 @@ jobs:
       - name: Build linux-xanmod-tt-cjktty for arch
         uses: antman666/build-aur-action@mine
         with:
-          repo-name: linux-xanmod-tt-cjktty
+          repo-name: linux-xanmod-cacule-anbox-cjktty
