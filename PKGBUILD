@@ -69,7 +69,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-tt
 _major=5.15
-pkgver=${_major}.7
+pkgver=${_major}.8
 _branch=5.x
 xanmod=1
 pkgrel=${xanmod}
@@ -106,7 +106,7 @@ done
 
 sha256sums=('57b2cf6991910e3b67a1b3490022e8a0674b6965c74c12da1e99d138d1991ee8'
             'SKIP'
-            '8b65259ef4cd1b03f1ec4a2b36daa33145c3004124a6681433a53c449ecbbb02'
+            'a419bc95f6add81a4f24fa80ba644166563a6ff3385df59c0f4a19b1bc3834e3'
             '97a525e28a270c5e6e5a4fc4ab4920c42ceef2f9921857497ab3c56ec343803e'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
