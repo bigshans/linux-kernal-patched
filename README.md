@@ -4,6 +4,16 @@
 
 This is my personal linux-xanmod-tt kernel repository. I made a little modification to the linux-xanmod-tt package. If you want to use it, please note that this will overwrite the original package.
 
+## About TT
+
+https://github.com/hamadmarri/TT-CPU-Scheduler
+
+## Problems
+
+- [issue#14 about docker](https://github.com/hamadmarri/TT-CPU-Scheduler/issues/14)
+
+If you really care about it, I suggest you to use xanmod or BORE scheduler.
+
 ## Differences from Linux-Xanmod-Caucle
 
 - Add anbox config
