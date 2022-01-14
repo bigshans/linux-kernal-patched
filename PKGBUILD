@@ -118,7 +118,7 @@ prepare() {
   cd linux-${_major}
 
   # Apply Xanmod patch
-  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}-tt
+  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}
 
   msg2 "Setting version..."
   scripts/setlocalversion --save-scmversion
