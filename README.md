@@ -1,8 +1,8 @@
-# Linux-Xanmod-TT-Anbox-Cjktty
+# Linux-Xanmod-Anbox-Cjktty
 
 ## Introduction
 
-This is my personal linux-xanmod-tt kernel repository. I made a little modification to the linux-xanmod-tt package. If you want to use it, please note that this will overwrite the original package.
+This is my personal linux-xanmod-anbox-tty kernel repository.
 
 ## Differences from Linux-Xanmod-Caucle
 
