@@ -67,7 +67,7 @@ _makenconfig=
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
-pkgbase=linux-xanmod-anobox-tty
+pkgbase=linux-xanmod-anbox-tty
 _major=5.16
 pkgver=${_major}.1
 _branch=5.x
