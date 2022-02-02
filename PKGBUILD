@@ -23,6 +23,7 @@ CONFIG_ANDROID=y
 CONFIG_ANDROID_BINDER_IPC=m
 CONFIG_ANDROID_BINDERFS=n
 CONFIG_ANDROID_BINDER_DEVICES="binder,hwbinder,vndbinder"
+_compiler=clang
 
 ## Disable NUMA since most users do not have multiple processors. Breaks CUDA/NvEnc.
 ## Archlinux and Xanmod enable it by default.
@@ -69,7 +70,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-tt
 _major=5.15
-pkgver=${_major}.17
+pkgver=${_major}.19
 _branch=5.x
 xanmod=1
 pkgrel=${xanmod}
@@ -106,7 +107,7 @@ done
 
 sha256sums=('57b2cf6991910e3b67a1b3490022e8a0674b6965c74c12da1e99d138d1991ee8'
             'SKIP'
-            '82396ba8728b0abd1046d2c8d7e8ddb15458af57eb0d26826c227973cb09d933'
+            'cbd76cd18e71a08528c2dd413adfaa5a417f9f3dbd337d47ae495b875b1c907c'
             '97a525e28a270c5e6e5a4fc4ab4920c42ceef2f9921857497ab3c56ec343803e'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
