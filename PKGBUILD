@@ -69,8 +69,8 @@ _makenconfig=
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-anbox-tty
-_major=5.16
-pkgver=${_major}.16
+_major=5.17
+pkgver=${_major}.0
 _branch=5.x
 xanmod=1
 pkgrel=${xanmod}
@@ -88,9 +88,9 @@ fi
 options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
-source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
+source=("https://cdn.kernel.org/pub/linux/kernel/${_branch}/linux-${_major}.tar."{xz,sign}
         "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
-        "https://github.com/HougeLangley/customkernel/releases/download/v${_major}-patch/v1-cjktty-${_major}.patch"
+        "https://raw.githubusercontent.com/zhmars/cjktty-patches/master/v${_branch}/cjktty-${_major}.patch"
         choose-gcc-optimization.sh)
 validpgpkeys=(
     'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linux Torvalds
@@ -105,10 +105,10 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('027d7e8988bb69ac12ee92406c3be1fe13f990b1ca2249e226225cd1573308bb'
+sha256sums=('555fef61dddb591a83d62dd04e252792f9af4ba9ef14683f64840e46fa20b1b1'
             'SKIP'
-            '4725cdfa4f3375e4a07e4d6b323e022b12a6a9d1a09ed44c1939d67ca8062558'
-            'cc5b2dffc231aef1aa950ba0f1b8d078c0d24f190e33f7b217f10d5d4c705122'
+            'b827f3e202d3fd1eaf8216a2098f8c86a02fbc33312c68d1741a52325554b8a3'
+            '697b18e018626e13d596a826b68ea2cfcb94c9c95a5d4e5253687c0f17883eae'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
