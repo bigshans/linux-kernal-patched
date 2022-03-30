@@ -70,7 +70,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-anbox-tty
 _major=5.17
-pkgver=${_major}.0
+pkgver=${_major}.1
 _branch=5.x
 xanmod=1
 pkgrel=${xanmod}
@@ -88,7 +88,7 @@ fi
 options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
-source=("https://cdn.kernel.org/pub/linux/kernel/${_branch}/linux-${_major}.tar."{xz,sign}
+source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/zhmars/cjktty-patches/master/v${_branch}/cjktty-${_major}.patch"
         choose-gcc-optimization.sh)
@@ -107,7 +107,7 @@ done
 
 sha256sums=('555fef61dddb591a83d62dd04e252792f9af4ba9ef14683f64840e46fa20b1b1'
             'SKIP'
-            'b827f3e202d3fd1eaf8216a2098f8c86a02fbc33312c68d1741a52325554b8a3'
+            'fe16b85a560b4a36f6855361fe10891d11614ad93d99b243dbcce9004979748d'
             '697b18e018626e13d596a826b68ea2cfcb94c9c95a5d4e5253687c0f17883eae'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
