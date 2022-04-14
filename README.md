@@ -1,5 +1,9 @@
 # Linux-Xanmod-TT-Anbox-Cjktty
 
+## Branch Deprecated
+
+Because the tt patch has not been updated to a higher version for a long time, and it is not expected to be updated in the future. I deprecated this branch. Please use the xanmod branch.
+
 ## Introduction
 
 This is my personal linux-xanmod-tt kernel repository. I made a little modification to the linux-xanmod-tt package. If you want to use it, please note that this will overwrite the original package.
