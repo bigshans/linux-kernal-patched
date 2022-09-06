@@ -1,0 +1,6 @@
+pkg/
+src/
+linux*
+config*
+patch*
+cjktty-*
