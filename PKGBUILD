@@ -69,9 +69,9 @@ _makenconfig=
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-anbox-tty
-_major=5.19
-pkgver=${_major}.12
-_branch=5.x
+_major=6.0
+pkgver=${_major}.0
+_branch=6.x
 xanmod=1
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri'
@@ -105,10 +105,10 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('ff240c579b9ee1affc318917de07394fc1c3bb49dac25ec1287370c2e15005a8'
+sha256sums=('5c2443a5538de52688efb55c27ab0539c1f5eb58c0cfd16a2b9fbb08fd81788e'
             'SKIP'
-            'adb2a2e0e8cb1c8caf184712f486e4631324dda8a5686dde27dee253af4b0a13'
-            '333ae6edd8ea9cdbae846323aa8052148c89ee0cae3068481522705fc89e0c36'
+            'c4c9ceae47e1809d2e32ef5980f4e9410777273eb6d1cae67788367a2a2d5cd4'
+            '8db3be0f5ea5fcbc3c3ed219145ddeeeb787d9681ab7d935a38917482011b43f'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
