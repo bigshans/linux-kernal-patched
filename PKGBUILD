@@ -46,6 +46,14 @@ if [ -z ${_compiler+x} ]; then
   _compiler=gcc
 fi
 
+# Choose between the 4 main configs for stable branch. Default x86-64-v1 which use CONFIG_GENERIC_CPU2:
+# Possible values: config_x86-64-v1 (default) / config_x86-64-v2 / config_x86-64-v3 / config_x86-64-v4
+# This will be overwritten by selecting any option in microarchitecture script
+# Source files: https://github.com/xanmod/linux/tree/5.17/CONFIGS/xanmod/gcc
+if [ -z ${_config+x} ]; then
+  _config=config_x86-64-v1
+fi
+
 # Compress modules with ZSTD (to save disk space)
 if [ -z ${_compress_modules+x} ]; then
   _compress_modules=n
@@ -69,8 +77,8 @@ _makenconfig=
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-anbox-tty
-_major=6.2
-pkgver=${_major}.11
+_major=6.3
+pkgver=${_major}.0
 _branch=6.x
 xanmod=1
 pkgrel=${xanmod}
@@ -105,10 +113,10 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('74862fa8ab40edae85bb3385c0b71fe103288bce518526d63197800b3cbdecb1'
+sha256sums=('ba3491f5ed6bd270a370c440434e3d69085fcdd528922fa01e73d7657db73b1e'
             'SKIP'
-            '49460fdd0dd0169a8a3b6ac8a99d476bd2cdce059c053916ec780bd7031216b5'
-            '5dac65eb907c4a8970ca8caa2c63c9a3645ef96bcaa2cfb3cb10197b3d92db80'
+            'ed7f827ba466a67cc7f5319013f3e1844f81eec6dcf464d7eb95d42e7a19f04a'
+            '427b16aeece1b62667ab34d45e43e4f476f5f4875daf8553597c95e2bfa22ef1'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
@@ -122,11 +130,11 @@ prepare() {
   patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}
 
   msg2 "Setting version..."
-  scripts/setlocalversion --save-scmversion
+  # scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
   #echo "${pkgbase#linux-xanmod}" > localversion.20-pkgname
 
-  cp CONFIGS/xanmod/${_compiler}/config_x86-64-v2 CONFIGS/xanmod/${_compiler}/config
+  # cp CONFIGS/xanmod/${_compiler}/config_x86-64-v1 CONFIGS/xanmod/${_compiler}/config
 
   # Archlinux patches
   local src
@@ -139,7 +147,7 @@ prepare() {
   done
 
   # Applying configuration
-  cp -vf CONFIGS/xanmod/${_compiler}/config .config
+  cp -vf CONFIGS/xanmod/${_compiler}/${_config} .config
   # enable LTO_CLANG_THIN
   if [ "${_compiler}" = "clang" ]; then
     scripts/config --disable LTO_CLANG_FULL
