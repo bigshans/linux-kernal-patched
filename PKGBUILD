@@ -77,8 +77,8 @@ _makenconfig=
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-anbox-tty
-_major=6.3
-pkgver=${_major}.9
+_major=6.4
+pkgver=${_major}.0
 _branch=6.x
 xanmod=1
 pkgrel=${xanmod}
@@ -113,10 +113,10 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('ba3491f5ed6bd270a370c440434e3d69085fcdd528922fa01e73d7657db73b1e'
+sha256sums=('8fa0588f0c2ceca44cac77a0e39ba48c9f00a6b9dc69761c02a5d3efac8da7f3'
             'SKIP'
-            'f6010d895c549ba8fc7e4728208c04de988486de0c30a1cdf50e04855d37675d'
-            '427b16aeece1b62667ab34d45e43e4f476f5f4875daf8553597c95e2bfa22ef1'
+            '4eb2e7c7553536beeed8c3228395b9157f89bc085a0d47f017680747e4c914b5'
+            'a06671be0ea57693c09f9f96fabfdefd69153bdda2bf45d516825f145e6b75cf'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
