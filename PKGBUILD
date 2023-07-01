@@ -80,7 +80,7 @@ pkgbase=linux-xanmod-anbox-tty
 _major=6.4
 pkgver=${_major}.0
 _branch=6.x
-xanmod=1
+xanmod=2
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri'
 url="http://www.xanmod.org/"
@@ -115,7 +115,7 @@ done
 
 sha256sums=('8fa0588f0c2ceca44cac77a0e39ba48c9f00a6b9dc69761c02a5d3efac8da7f3'
             'SKIP'
-            '4eb2e7c7553536beeed8c3228395b9157f89bc085a0d47f017680747e4c914b5'
+            'c3ed02baf2b503ab53ff86363ee21643408e1d14e4b4046a09acbca1788e0201'
             'a06671be0ea57693c09f9f96fabfdefd69153bdda2bf45d516825f145e6b75cf'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
