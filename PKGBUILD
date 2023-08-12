@@ -78,9 +78,11 @@ _makenconfig=
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.4
-pkgver=${_major}.8
+pkgver=${_major}.10
 _branch=6.x
 xanmod=1
+_revision=
+_sf_branch=main
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri'
 url="http://www.xanmod.org/"
@@ -97,7 +99,7 @@ options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
-        "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
+        "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://sourceforge.net/projects/xanmod/files/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz/download"
         "https://raw.githubusercontent.com/zhmars/cjktty-patches/master/v${_branch}/cjktty-${_major}.patch"
         choose-gcc-optimization.sh)
 validpgpkeys=(
@@ -115,7 +117,7 @@ done
 
 sha256sums=('8fa0588f0c2ceca44cac77a0e39ba48c9f00a6b9dc69761c02a5d3efac8da7f3'
             'SKIP'
-            '8e3ada9a004bc6506e083fc232234bb4f422a51f37c8398fc5527200c27aa858'
+            '7040505e4388b7322eab4a15c321f8da5368298fc3d926bc402228409a947cc5'
             'a06671be0ea57693c09f9f96fabfdefd69153bdda2bf45d516825f145e6b75cf'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
@@ -127,7 +129,7 @@ prepare() {
   cd linux-${_major}
 
   # Apply Xanmod patch
-  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}
+  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}${_revision}
 
   msg2 "Setting version..."
   # scripts/setlocalversion --save-scmversion
