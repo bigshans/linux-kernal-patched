@@ -78,7 +78,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.5
-pkgver=${_major}.1
+pkgver=${_major}.2
 _branch=6.x
 xanmod=1
 _revision=
@@ -99,7 +99,7 @@ options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
-        "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://sourceforge.net/projects/xanmod/files/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz/download"
+        "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://phoenixnap.dl.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/zhmars/cjktty-patches/master/v${_branch}/cjktty-${_major}.patch"
         choose-gcc-optimization.sh)
 validpgpkeys=(
@@ -117,7 +117,7 @@ done
 
 sha256sums=('7a574bbc20802ea76b52ca7faf07267f72045e861b18915c5272a98c27abf884'
             'SKIP'
-            '55c9b554e5943a9e6cf9104b68d47821adb4737cd2bd608c864eb98ff49502be'
+            '98b16767f923f4c67d09a4fa7ea3c5ce3412cd9a616b45c049e715321cc624e1'
             'd03d37559e403bf8700d5b380578a257ec32d2c4c869b659a60468394a5f7532'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
