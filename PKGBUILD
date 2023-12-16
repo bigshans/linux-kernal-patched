@@ -51,7 +51,7 @@ fi
 # This will be overwritten by selecting any option in microarchitecture script
 # Source files: https://github.com/xanmod/linux/tree/5.17/CONFIGS/xanmod/gcc
 if [ -z ${_config+x} ]; then
-  _config=config_x86-64-v2
+  _config=config_x86-64-v3
 fi
 
 # Compress modules with ZSTD (to save disk space)
@@ -78,7 +78,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.6
-pkgver=${_major}.5
+pkgver=${_major}.7
 _branch=6.x
 xanmod=1
 _revision=
@@ -117,7 +117,7 @@ done
 
 sha256sums=('d926a06c63dd8ac7df3f86ee1ffc2ce2a3b81a2d168484e76b5b389aba8e56d0'
             'SKIP'
-            'bccd2c8d1b1d60bb7c17640faa701e87f1abf8645e02fd73d3e0fe64fd0d8986'
+            '9bc8191b89016b62f4fce66742813e3bfb9d85ac063e2ba0cb23d162d64e4d04'
             '47a008c8b3b684330f2b80beeaca20105ab3afcded9530b28b078821bd062ba6'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
@@ -134,7 +134,7 @@ prepare() {
   msg2 "Setting version..."
   # scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
-  #echo "${pkgbase#linux-xanmod}" > localversion.20-pkgname
+  echo "${pkgbase#linux-xanmod}" > localversion.20-pkgname
 
   # cp CONFIGS/xanmod/${_compiler}/config_x86-64-v1 CONFIGS/xanmod/${_compiler}/config
 
@@ -170,11 +170,12 @@ prepare() {
                  --enable CONFIG_IKCONFIG_PROC
 
   # User set. See at the top of this file
-  if [ "$use_tracers" = "n" ]; then
-    msg2 "Disabling FUNCTION_TRACER/GRAPH_TRACER only if we are not compiling with clang..."
-    if [ "${_compiler}" = "gcc" ]; then
-      scripts/config --disable CONFIG_FUNCTION_TRACER \
-                     --disable CONFIG_STACK_TRACER
+  if [ "$use_tracers" = "y" ]; then
+    msg2 "Enabling CONFIG_FTRACE only if we are not compiling with clang..."
+    if [ "${_compiler}" = "gcc" ] || [ "${_compiler}q" = "q" ]; then
+      scripts/config --enable CONFIG_FTRACE \
+                     --enable CONFIG_FUNCTION_TRACER \
+                     --enable CONFIG_STACK_TRACER
     fi
   fi
 
@@ -248,6 +249,10 @@ _package() {
             WIREGUARD-MODULE
             KSMBD-MODULE
             NTFS3-MODULE)
+  replaces=(
+    virtualbox-guest-modules-arch
+    wireguard-arch
+  )
 
   cd linux-${_major}
   local kernver="$(<version)"
@@ -262,7 +267,8 @@ _package() {
   echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
 
   msg2 "Installing modules..."
-  make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 modules_install
+  ZSTD_CLEVEL=19 make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
+    DEPMOD=/doesnt/exist modules_install  # Suppress depmod
 
   # remove build and source links
   rm "$modulesdir"/build
