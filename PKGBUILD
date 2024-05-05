@@ -78,7 +78,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.8
-pkgver=${_major}.5
+pkgver=${_major}.9
 _branch=6.x
 xanmod=1
 _revision=
@@ -118,7 +118,7 @@ done
 
 sha256sums=('c969dea4e8bb6be991bbf7c010ba0e0a5643a3a8d8fb0a2aaa053406f1e965f3'
             'SKIP'
-            'ce92f1ac419a541a812e445e6edcf1fb2cfc4a10b42d49294d936388702ceb44'
+            '59556cb5c51d70141200ac0d8d8d2b240601e77549e22034e7166451e0c6f9f1'
             '4853ac7ea7271e9ac91ff9651d7002ed66ffd3751de49823e5b18f8300abdaf9'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
