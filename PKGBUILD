@@ -77,13 +77,13 @@ _makenconfig=
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-anbox-tty
-_major=6.8
-pkgver=${_major}.9
+_major=6.9
+pkgver=${_major}.0
 _branch=6.x
 xanmod=1
 _revision=
-_sf_branch=main
-_cjk_major=6.7
+_sf_branch=edge
+_cjk_major=6.9
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri'
 url="http://www.xanmod.org/"
@@ -91,7 +91,15 @@ arch=(x86_64)
 
 license=(GPL2)
 makedepends=(
-  bc cpio kmod libelf perl tar xz
+  bc
+  cpio
+  gettext
+  libelf
+  pahole
+  perl
+  python
+  tar
+  xz
 )
 if [ "${_compiler}" = "clang" ]; then
   makedepends+=(clang llvm lld python)
@@ -101,8 +109,9 @@ _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://sourceforge.net/projects/xanmod/files/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
-        "https://raw.githubusercontent.com/zhmars/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
+        "https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
         choose-gcc-optimization.sh)
+
 validpgpkeys=(
     'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linux Torvalds
     '647F28654894E3BD457199BE38DBBDC86092693E' # Greg Kroah-Hartman
@@ -112,14 +121,13 @@ validpgpkeys=(
 _commit="ec9e9a4219fe221dec93fa16fddbe44a34933d8d"
 _patches=()
 for _patch in ${_patches[@]}; do
-    #source+=("${_patch}::https://git.archlinux.org/svntogit/packages.git/plain/trunk/${_patch}?h=packages/linux&id=${_commit}")
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('c969dea4e8bb6be991bbf7c010ba0e0a5643a3a8d8fb0a2aaa053406f1e965f3'
+sha256sums=('24fa01fb989c7a3e28453f117799168713766e119c5381dac30115f18f268149'
             'SKIP'
-            '59556cb5c51d70141200ac0d8d8d2b240601e77549e22034e7166451e0c6f9f1'
-            '4853ac7ea7271e9ac91ff9651d7002ed66ffd3751de49823e5b18f8300abdaf9'
+            '4ff14a5ba9d4a9fcb08c4677640282025cba03300073afe60a3729f74c2384e6'
+            '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
@@ -147,6 +155,7 @@ prepare() {
     [[ $src = *.patch ]] || continue
     msg2 "Applying patch $src..."
     patch -Np1 < "../$src"
+    msg2 "$src patched"
   done
 
   # Applying configuration

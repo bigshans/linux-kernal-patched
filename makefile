@@ -2,7 +2,7 @@
 build:
 	makepkg -sfi
 get:
-	makepkg -g
+	proxychains -q makepkg -g
 clean:
 	rm -rf pkg src
 purge:
