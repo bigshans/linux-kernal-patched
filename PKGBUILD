@@ -23,6 +23,7 @@ CONFIG_ANDROID=y
 CONFIG_ANDROID_BINDER_IPC=m
 CONFIG_ANDROID_BINDERFS=n
 CONFIG_ANDROID_BINDER_DEVICES="binder,hwbinder,vndbinder"
+CONFIG_DRM_SIMPLEDRM=y
 # _compiler=clang
 
 ## Disable NUMA since most users do not have multiple processors. Breaks CUDA/NvEnc.
@@ -78,7 +79,7 @@ _makenconfig=
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.9
-pkgver=${_major}.3
+pkgver=${_major}.4
 _branch=6.x
 xanmod=1
 _revision=
@@ -126,7 +127,7 @@ done
 
 sha256sums=('24fa01fb989c7a3e28453f117799168713766e119c5381dac30115f18f268149'
             'SKIP'
-            '96c10d32ba2b1ad0043c90d88337793237a426001985a9ca6b53bfb107ac1d80'
+            'b896d617cafe28637f2e866ef445fc05cece8b2202190ca4eaa13f8ce76f7aef'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
