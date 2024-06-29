@@ -1,6 +1,6 @@
 # Maintainer: Joan Figueras <ffigue at gmail dot com>
 # Contributor: Torge Matthies <openglfreak at googlemail dot com>
-# Contributor: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+# Contributor: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
 # Contributor: Yoshi2889 <rick.2889 at gmail dot com>
 # Contributor: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
@@ -43,8 +43,9 @@ if [ -z ${use_tracers+x} ]; then
 fi
 
 ## Choose between GCC and CLANG config (default is GCC)
-if [ -z ${_compiler+x} ]; then
-  _compiler=gcc
+## Use the environment variable "_compiler=clang"
+if [ "${_compiler}" = "clang" ]; then
+  _compiler_flags="CC=clang HOSTCC=clang LLVM=1 LLVM_IAS=1"
 fi
 
 # Choose between the 4 main configs for stable branch. Default x86-64-v1 which use CONFIG_GENERIC_CPU2:
@@ -52,7 +53,7 @@ fi
 # This will be overwritten by selecting any option in microarchitecture script
 # Source files: https://github.com/xanmod/linux/tree/5.17/CONFIGS/xanmod/gcc
 if [ -z ${_config+x} ]; then
-  _config=config_x86-64-v3
+  _config=config_x86-64-v2
 fi
 
 # Compress modules with ZSTD (to save disk space)
@@ -73,13 +74,15 @@ if [ -z ${_localmodcfg} ]; then
 fi
 
 # Tweak kernel options prior to a build via nconfig
-_makenconfig=
+if [ -z ${_makenconfig} ]; then
+  _makenconfig=n
+fi
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.9
-pkgver=${_major}.5
+pkgver=${_major}.7
 _branch=6.x
 xanmod=1
 _revision=
@@ -103,7 +106,7 @@ makedepends=(
   xz
 )
 if [ "${_compiler}" = "clang" ]; then
-  makedepends+=(clang llvm lld python)
+  makedepends+=(clang llvm lld)
 fi
 options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
@@ -127,7 +130,7 @@ done
 
 sha256sums=('24fa01fb989c7a3e28453f117799168713766e119c5381dac30115f18f268149'
             'SKIP'
-            '96632ac51119213ee9f664fe7c667376eeb1044ff8566c22715972c5a94f4d3d'
+            '235f0c325080342fed184ec3d415a865293c66a6010965b6cd3c5cfe02f2c6d9'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
@@ -142,11 +145,8 @@ prepare() {
   patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}${_revision}
 
   msg2 "Setting version..."
-  # scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux-xanmod}" > localversion.20-pkgname
-
-  # cp CONFIGS/xanmod/${_compiler}/config_x86-64-v1 CONFIGS/xanmod/${_compiler}/config
 
   # Archlinux patches
   local src
@@ -160,7 +160,7 @@ prepare() {
   done
 
   # Applying configuration
-  cp -vf CONFIGS/xanmod/${_compiler}/${_config} .config
+  cp -vf CONFIGS/xanmod/gcc/${_config} .config
   # enable LTO_CLANG_THIN
   if [ "${_compiler}" = "clang" ]; then
     scripts/config --disable LTO_CLANG_FULL
@@ -201,7 +201,10 @@ prepare() {
   fi
 
   # Let's user choose microarchitecture optimization in GCC
-  sh ${srcdir}/choose-gcc-optimization.sh $_microarchitecture
+  # Use default microarchitecture only if we have not choosen another microarchitecture
+  if [ "$_microarchitecture" -ne "0" ]; then
+    ../choose-gcc-optimization.sh $_microarchitecture
+  fi
 
   # This is intended for the people that want to build this package with their own config
   # Put the file "myconfig" at the package folder (this will take preference) or "${XDG_CONFIG_HOME}/linux-xanmod/myconfig"
@@ -228,19 +231,23 @@ prepare() {
   if [ "$_localmodcfg" = "y" ]; then
     if [ -f $HOME/.config/modprobed.db ]; then
       msg2 "Running Steven Rostedt's make localmodconfig now"
-      make LLVM=$_LLVM LLVM_IAS=$_LLVM LSMOD=$HOME/.config/modprobed.db localmodconfig
+      make ${_compiler_flags} LSMOD=$HOME/.config/modprobed.db localmodconfig
     else
       msg2 "No modprobed.db data found"
       exit 1
     fi
   fi
 
-  make LLVM=$_LLVM LLVM_IAS=$_LLVM olddefconfig
+  msg2 "make ${_compiler_flags} olddefconfig"
+  make ${_compiler_flags} olddefconfig
+  #diff -u CONFIGS/xanmod/gcc/${_config} .config || :
 
   make -s kernelrelease > version
   msg2 "Prepared %s version %s" "$pkgbase" "$(<version)"
 
-  [[ -z "$_makenconfig" ]] || make LLVM=$_LLVM LLVM_IAS=$_LLVM nconfig
+  if [ "$_makenconfig" = "y" ]; then
+    make ${_compiler_flags} nconfig
+  fi
 
   # save configuration for later reuse
   cat .config > "${SRCDEST}/config.last"
@@ -248,7 +255,8 @@ prepare() {
 
 build() {
   cd linux-${_major}
-  make LLVM=$_LLVM LLVM_IAS=$_LLVM all -j16
+  make ${_compiler_flags} all -j 16
+  make -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
 }
 
 _package() {
@@ -266,8 +274,7 @@ _package() {
   )
 
   cd linux-${_major}
-  local kernver="$(<version)"
-  local modulesdir="$pkgdir/usr/lib/modules/$kernver"
+  local modulesdir="$pkgdir/usr/lib/modules/$(<version)"
 
   msg2 "Installing boot image..."
   # systemd expects to find the kernel here to allow hibernation
@@ -281,7 +288,6 @@ _package() {
   ZSTD_CLEVEL=19 make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
     DEPMOD=/doesnt/exist modules_install  # Suppress depmod
 
-  # remove build and source links
   rm "$modulesdir"/build
 }
 
@@ -294,19 +300,16 @@ _package-headers() {
 
   msg2 "Installing build files..."
   install -Dt "$builddir" -m644 .config Makefile Module.symvers System.map \
-    localversion.* version vmlinux
+    localversion.* version vmlinux tools/bpf/bpftool/vmlinux.h
   install -Dt "$builddir/kernel" -m644 kernel/Makefile
   install -Dt "$builddir/arch/x86" -m644 arch/x86/Makefile
   cp -t "$builddir" -a scripts
 
   # add objtool for external module building and enabled VALIDATION_STACK option
   install -Dt "$builddir/tools/objtool" tools/objtool/objtool
-  
-  # required when DEBUG_INFO_BTF_MODULES is enabled
-  if [ -f "tools/bpf/resolve_btfids/resolve_btfids" ]; then install -Dt "$builddir/tools/bpf/resolve_btfids" tools/bpf/resolve_btfids/resolve_btfids ; fi
 
-  # add xfs and shmem for aufs building
-  mkdir -p "$builddir"/{fs/xfs,mm}
+  # required when DEBUG_INFO_BTF_MODULES is enabled
+  install -Dt "$builddir/tools/bpf/resolve_btfids" tools/bpf/resolve_btfids/resolve_btfids
 
   msg2 "Installing headers..."
   cp -t "$builddir" -a include
