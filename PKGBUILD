@@ -82,7 +82,7 @@ fi
 
 pkgbase=linux-xanmod-anbox-tty
 _major=6.9
-pkgver=${_major}.7
+pkgver=${_major}.8
 _branch=6.x
 xanmod=1
 _revision=
@@ -130,7 +130,7 @@ done
 
 sha256sums=('24fa01fb989c7a3e28453f117799168713766e119c5381dac30115f18f268149'
             'SKIP'
-            '235f0c325080342fed184ec3d415a865293c66a6010965b6cd3c5cfe02f2c6d9'
+            '668aee6a635aab1cd29346840587d45c1721ad0258c8e1d13988ed8ba8568e4a'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
