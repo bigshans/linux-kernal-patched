@@ -1,6 +1,6 @@
 pkgbase = linux-xanmod-anbox-tty
 	pkgdesc = Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri
-	pkgver = 6.10.1
+	pkgver = 6.10.2
 	pkgrel = 1
 	url = http://www.xanmod.org/
 	arch = x86_64
@@ -17,14 +17,14 @@ pkgbase = linux-xanmod-anbox-tty
 	options = !strip
 	source = https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.tar.xz
 	source = https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.tar.sign
-	source = patch-6.10.1-xanmod1.xz::https://sourceforge.net/projects/xanmod/files/releases/edge/6.10.1-xanmod1/patch-6.10.1-xanmod1.xz
+	source = patch-6.10.2-xanmod1.xz::https://sourceforge.net/projects/xanmod/files/releases/edge/6.10.2-xanmod1/patch-6.10.2-xanmod1.xz
 	source = https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v6.x/cjktty-6.9.patch
 	source = choose-gcc-optimization.sh
 	validpgpkeys = ABAF11C65A2970B130ABE3C479BE3E4300411886
 	validpgpkeys = 647F28654894E3BD457199BE38DBBDC86092693E
 	sha256sums = 774698422ee54c5f1e704456f37c65c06b51b4e9a8b0866f34580d86fef8e226
 	sha256sums = SKIP
-	sha256sums = b1d337db2d1b062fe070169c1bdd69291cd6239566560fafc9debfce8a2e316f
+	sha256sums = cee2ed4ab7528cd6c10d9ca76eb31336c25868982a2920fb6fb01daf538596ae
 	sha256sums = 6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d
 	sha256sums = 1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee
 
