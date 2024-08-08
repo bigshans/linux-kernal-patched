@@ -39,7 +39,7 @@ fi
 ## Set variable "use_tracers" to: n to disable (possibly increase performance)
 ##                                y to enable  (stock default)
 if [ -z ${use_tracers+x} ]; then
-  use_tracers=y
+  use_tracers=n
 fi
 
 ## Choose between GCC and CLANG config (default is GCC)
@@ -168,6 +168,47 @@ prepare() {
     scripts/config --enable LTO_CLANG_THIN
     _LLVM=1
   fi
+
+  # Change tick rate to 1000.
+  scripts/config -d HZ_500
+  scripts/config -e HZ_1000
+  scripts/config --set-val HZ 1000
+
+  # Enable full tickless mode
+  scripts/config -d HZ_PERIODIC
+  scripts/config -d NO_HZ_IDLE
+  scripts/config -d CONTEXT_TRACKING_USER_FORCE
+  scripts/config -e NO_HZ_FULL
+  scripts/config -e NO_HZ
+  scripts/config -e NO_HZ_COMMON
+  scripts/config -e CONTEXT_TRACKING
+
+  # set RCU
+  scripts/config -e RT_MUTEXES
+  scripts/config -e PREEMPT_RCU
+  scripts/config -e RCU_EXPERT
+  scripts/config -d FORCE_TASKS_RCU
+  scripts/config -d FORCE_TASKS_RUDE_RCU
+  scripts/config -d FORCE_TASKS_TRACE_RCU
+  scripts/config --set-val RCU_FANOUT 32
+  scripts/config --set-val RCU_FANOUT_LEAF 16
+  scripts/config -e RCU_BOOST
+  scripts/config --set-val RCU_BOOST_DELAY 500
+  scripts/config -d RCU_EXP_KTHREAD
+  scripts/config -e RCU_NOCB_CPU
+  scripts/config -e RCU_NOCB_CPU_DEFAULT_ALL
+  scripts/config -d RCU_NOCB_CPU_CB_BOOST
+  scripts/config -d TASKS_TRACE_RCU_READ_MB
+  scripts/config -e RCU_LAZY
+
+  # Enable full preempt.
+  scripts/config -e PREEMPT_BUILD
+  scripts/config -d PREEMPT_NONE
+  scripts/config -d PREEMPT_VOLUNTARY
+  scripts/config -e PREEMPT
+  scripts/config -e PREEMPT_COUNT
+  scripts/config -e PREEMPTION
+  scripts/config -e PREEMPT_DYNAMIC
 
   scripts/config --module  CONFIG_ASHMEM
   scripts/config --enable  CONFIG_ANDROID
