@@ -10,6 +10,7 @@ This is my personal linux kernel repository.
 - Add cjktty
 - Add BORE CPU Scheduler
 - Added some make parameters to fit my computer's hardware
+- Tickless
 
 ## Build And Install
 
