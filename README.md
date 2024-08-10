@@ -1,13 +1,14 @@
-# Linux-Xanmod-Anbox-Cjktty
+# Linux-Xanmod-Bore-Cjktty
 
 ## Introduction
 
-This is my personal linux-xanmod-anbox-tty kernel repository.
+This is my personal linux kernel repository.
 
 ## Differences from Linux-Xanmod-Caucle
 
 - Add anbox config
 - Add cjktty
+- Add BORE CPU Scheduler
 - Added some make parameters to fit my computer's hardware
 
 ## Build And Install

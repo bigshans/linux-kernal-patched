@@ -80,7 +80,7 @@ fi
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
-pkgbase=linux-xanmod-anbox-tty
+pkgbase=linux-xanmod-bore-tty
 _major=6.10
 pkgver=${_major}.3
 _branch=6.x
@@ -90,7 +90,7 @@ _revision=
 _sf_branch=main
 _cjk_major=6.9
 pkgrel=${xanmod}
-pkgdesc='Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri'
+pkgdesc='Linux Xanmod.'
 url="http://www.xanmod.org/"
 arch=(x86_64)
 
@@ -115,6 +115,7 @@ _srcname="linux-${pkgver}-xanmod${xanmod}"
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://sourceforge.net/projects/xanmod/files/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
+        "0001.bore.patch"
         choose-gcc-optimization.sh)
 
 validpgpkeys=(
@@ -133,6 +134,7 @@ sha256sums=('774698422ee54c5f1e704456f37c65c06b51b4e9a8b0866f34580d86fef8e226'
             'SKIP'
             'e0b4fd44086886b873d0af0222a7bdb5c70a63c5d47939c375dba392b4673921'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
+            '93783b04c86fc5c10b091fdf2373edea7094c3650b0051e558d6c1fa1db88f78'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
@@ -168,6 +170,11 @@ prepare() {
     scripts/config --enable LTO_CLANG_THIN
     _LLVM=1
   fi
+
+  # Setting features for desktop use
+  msg2 "Setting features for desktop use..."
+  scripts/config --set-val CONFIG_BLK_DEV_LOOP_MIN_COUNT 0 \
+                 --enable SCHED_BORE
 
   # Change tick rate to 1000.
   scripts/config -d HZ_500

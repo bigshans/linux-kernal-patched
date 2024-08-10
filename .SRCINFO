@@ -1,5 +1,5 @@
-pkgbase = linux-xanmod-anbox-tty
-	pkgdesc = Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri
+pkgbase = linux-xanmod-bore-tty
+	pkgdesc = Linux Xanmod.
 	pkgver = 6.10.3
 	pkgrel = 1
 	url = http://www.xanmod.org/
@@ -19,6 +19,7 @@ pkgbase = linux-xanmod-anbox-tty
 	source = https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.10.tar.sign
 	source = patch-6.10.3-xanmod1.xz::https://sourceforge.net/projects/xanmod/files/releases/main/6.10.3-xanmod1/patch-6.10.3-xanmod1.xz
 	source = https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v6.x/cjktty-6.9.patch
+	source = 0001.bore.patch
 	source = choose-gcc-optimization.sh
 	validpgpkeys = ABAF11C65A2970B130ABE3C479BE3E4300411886
 	validpgpkeys = 647F28654894E3BD457199BE38DBBDC86092693E
@@ -26,9 +27,10 @@ pkgbase = linux-xanmod-anbox-tty
 	sha256sums = SKIP
 	sha256sums = e0b4fd44086886b873d0af0222a7bdb5c70a63c5d47939c375dba392b4673921
 	sha256sums = 6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d
+	sha256sums = 93783b04c86fc5c10b091fdf2373edea7094c3650b0051e558d6c1fa1db88f78
 	sha256sums = 1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee
 
-pkgname = linux-xanmod-anbox-tty
+pkgname = linux-xanmod-bore-tty
 	pkgdesc = The Linux kernel and modules with Xanmod patches
 	depends = coreutils
 	depends = kmod
@@ -42,6 +44,6 @@ pkgname = linux-xanmod-anbox-tty
 	replaces = virtualbox-guest-modules-arch
 	replaces = wireguard-arch
 
-pkgname = linux-xanmod-anbox-tty-headers
-	pkgdesc = Headers and scripts for building modules for the Linux Xanmod. Development branch with the Task Type CPU Scheduler by Hamad Al Marri kernel
+pkgname = linux-xanmod-bore-tty-headers
+	pkgdesc = Headers and scripts for building modules for the Linux Xanmod. kernel
 	depends = pahole
