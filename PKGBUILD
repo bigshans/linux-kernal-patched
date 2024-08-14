@@ -82,7 +82,7 @@ fi
 
 pkgbase=linux-xanmod-bore-tty
 _major=6.10
-pkgver=${_major}.3
+pkgver=${_major}.4
 _branch=6.x
 xanmod=1
 _revision=
@@ -132,7 +132,7 @@ done
 
 sha256sums=('774698422ee54c5f1e704456f37c65c06b51b4e9a8b0866f34580d86fef8e226'
             'SKIP'
-            'e0b4fd44086886b873d0af0222a7bdb5c70a63c5d47939c375dba392b4673921'
+            '80ccd3009a1e2f23fae9dcda54d87afe5afdbbe5e73d636eda5b465174fe0fc5'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
             '93783b04c86fc5c10b091fdf2373edea7094c3650b0051e558d6c1fa1db88f78'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
@@ -217,17 +217,19 @@ prepare() {
   scripts/config -e PREEMPTION
   scripts/config -e PREEMPT_DYNAMIC
 
-  scripts/config --module  CONFIG_ASHMEM
-  scripts/config --enable  CONFIG_ANDROID
-  scripts/config --enable  CONFIG_ANDROID_BINDER_IPC
-  scripts/config --enable  CONFIG_ANDROID_BINDERFS
-  scripts/config --set-str CONFIG_ANDROID_BINDER_DEVICES ""
   # CONFIG_STACK_VALIDATION gives better stack traces. Also is enabled in all official kernel packages by Archlinux team
   scripts/config --enable CONFIG_STACK_VALIDATION
 
   # Enable IKCONFIG following Arch's philosophy
   scripts/config --enable CONFIG_IKCONFIG \
                  --enable CONFIG_IKCONFIG_PROC
+
+  scripts/config --module  CONFIG_ASHMEM
+  scripts/config --enable  CONFIG_ANDROID
+  scripts/config --set-str CONFIG_ANDROID_BINDER_DEVICES ""
+  # Requested by Alexandre Frade to fix issues in python-gbinder
+  scripts/config --enable CONFIG_ANDROID_BINDERFS
+  scripts/config --enable CONFIG_ANDROID_BINDER_IPC
 
   # User set. See at the top of this file
   if [ "$use_tracers" = "y" ]; then
@@ -248,6 +250,11 @@ prepare() {
   if [ "$_compress_modules" = "y" ]; then
     scripts/config --enable CONFIG_MODULE_COMPRESS_ZSTD
   fi
+
+  ## Use Arch Wiki TOMOYO configuration: https://wiki.archlinux.org/title/TOMOYO_Linux#Installation_2
+  msg2 "Replacing Debian TOMOYO configuration with upstream Arch Linux..."
+  scripts/config --set-str CONFIG_SECURITY_TOMOYO_POLICY_LOADER      "/usr/bin/tomoyo-init"
+  scripts/config --set-str CONFIG_SECURITY_TOMOYO_ACTIVATION_TRIGGER "/usr/lib/systemd/systemd"
 
   # Let's user choose microarchitecture optimization in GCC
   # Use default microarchitecture only if we have not choosen another microarchitecture
