@@ -5,6 +5,8 @@ get:
 	proxychains -q makepkg -g
 clean:
 	rm -rf pkg src
+clear:
+	rm -rf pkg src linux-xanmod*
 purge:
 	rm -rf pkg src ./linux* ./config.last ./patch-* v*.patch cjktty-*
 install:
