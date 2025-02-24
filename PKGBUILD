@@ -82,12 +82,12 @@ fi
 
 pkgbase=linux-xanmod-bore-tty
 _major=6.13
-pkgver=${_major}.3
+pkgver=${_major}.4
 _branch=6.x
 xanmod=1
 _revision=
-_sf_branch=edge
-# _sf_branch=main
+# _sf_branch=edge
+_sf_branch=main
 _cjk_major=6.9
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod.'
@@ -113,7 +113,7 @@ options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
-        "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://master.dl.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz?viasf=1"
+        "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://master.dl.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
         "0001.bore.patch"
         choose-gcc-optimization.sh)
@@ -132,7 +132,7 @@ done
 
 sha256sums=('e79dcc6eb86695c6babfb07c2861912b635d5075c6cd1cd0567d1ea155f80d6e'
             'SKIP'
-            '58d8a066b5bee12e0026f7d3a3963f1cee6d6c4680d3e35c208ebb6c9af84eab'
+            'd8ccb0e826ec74ebc9e010209ee625f5952c7c71a43cd09cdd2a3555e4451b91'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
             'c38960465080786288416f4566663ddabe98887847ce49fca6e794958a10ca2f'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
