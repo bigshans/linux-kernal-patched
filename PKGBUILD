@@ -80,9 +80,9 @@ fi
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
-pkgbase=linux-xanmod-bore-tty
+pkgbase=linux-xanmod-bore-cjktty
 _major=6.14
-pkgver=${_major}.8
+pkgver=${_major}.10
 _branch=6.x
 xanmod=1
 _revision=
@@ -132,9 +132,9 @@ done
 
 sha256sums=('a294b683e7b161bb0517bb32ec7ed1d2ea7603dfbabad135170ed12d00c47670'
             'SKIP'
-            '64046f0c7f462db5b079ffa8d31dddc615523fd7b1d495bd427fb5d985ace12f'
+            '9e159208a68a37bc70535be54e30d7a394cfcdc73b6216412361c9e00934078b'
             '6714bf3968392e29f19e44514d490ad7ec718c3897003210fd1e499017dd429d'
-            'b9a267813134d346c6ca4e72535d589f3dcacdb90be761c6a1e98afa348ccf8b'
+            'cae4111fc3715891aff38ce093f4e2e735f39c46a124a382f3ac7943695bf0bc'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
