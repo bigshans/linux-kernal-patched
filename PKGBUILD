@@ -81,14 +81,14 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-bore-cjktty
-_major=6.18
-pkgver=${_major}.12
+_major=6.19
+pkgver=${_major}.3
 _branch=6.x
 xanmod=1
 _revision=
-# _sf_branch=edge
-_sf_branch=main
-_cjk_major=6.17.8
+_sf_branch=edge
+# _sf_branch=main
+_cjk_major=6.19
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod.'
 url="http://www.xanmod.org/"
@@ -115,7 +115,7 @@ _srcname="linux-${pkgver}-xanmod${xanmod}"
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://master.dl.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
-        "0001.bore.patch"
+        "0001-bore.patch"
         choose-gcc-optimization.sh)
 
 validpgpkeys=(
@@ -130,11 +130,11 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('9106a4605da9e31ff17659d958782b815f9591ab308d03b0ee21aad6c7dced4b'
+sha256sums=('303079a8250b8f381f82b03f90463d12ac98d4f6b149b761ea75af1323521357'
             'SKIP'
-            '1c32bcfc3094aab8ed7aeca33d557ef387067e30902bcae46320b0fe6be00c6d'
-            'd7d9930e0bdbfda2eb2e8bccc06ee37610b9dd7d28e2aa830a8806e2e8048f87'
-            'a789732b79b75d0d424393e003da0163778ad35b6421e2f18268f89715295bdf'
+            'b9431b29064dc322f60d844e0f6fca47db63f46b4880f55c71d7c1bbb871e177'
+            '8e25a53bef9af907cd2a180cee1312efd8441cbb9714c05cc99f416def879536'
+            '087802c0300a49ab9225a6a1bff33d30705893abc5d4873984f0cf06711c1142'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
