@@ -81,14 +81,14 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-bore-cjktty
-_major=6.19
-pkgver=${_major}.12
-_branch=6.x
+_major=7.0
+pkgver=${_major}.1
+_branch=7.x
 xanmod=1
 _revision=
-# _sf_branch=edge
-_sf_branch=main
-_cjk_major=6.19
+_sf_branch=edge
+# _sf_branch=main
+_cjk_major=7.0
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod.'
 url="http://www.xanmod.org/"
@@ -130,10 +130,10 @@ for _patch in ${_patches[@]}; do
     source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
 done
 
-sha256sums=('303079a8250b8f381f82b03f90463d12ac98d4f6b149b761ea75af1323521357'
+sha256sums=('bb7f6d80b387c757b7d14bb93028fcb90f793c5c0d367736ee815a100b3891f0'
             'SKIP'
-            'c75d87929fcc6bc1c88dac94f80d91e968fd2a00f5e49b56f1ba28a8a618e929'
-            '8e25a53bef9af907cd2a180cee1312efd8441cbb9714c05cc99f416def879536'
+            '97f33821b363310c9cb903d8d67a16b0ed060a11492fa7d1b9982644e4695a62'
+            'a38d6e7a727b6b5853068844791df5c5eb1b4b3a77ae7d53a9b6d291c2e53ea3'
             '58e31bcbdc1ef3b39c3d110729488a1ceebe6edc96f2f24f4e7978c4ab5b0b69'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
