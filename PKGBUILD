@@ -82,13 +82,13 @@ fi
 
 pkgbase=linux-xanmod-bore-cjktty
 _major=7.1
-pkgver=${_major}.3
+pkgver=${_major}.5
 _branch=7.x
 xanmod=1
 _revision=
 # _sf_branch=edge
 _sf_branch=main
-_cjk_major=7.1
+_cjk_major=7.1.2
 pkgrel=${xanmod}
 pkgdesc='Linux Xanmod.'
 url="http://www.xanmod.org/"
@@ -132,9 +132,9 @@ done
 
 sha256sums=('691f44797fbe790dc8a321604c927087526ad27b6d649925d60f8eed0a2564a0'
             'SKIP'
-            '2b7704be3c2d9d473141f182c85b0698e8664e80e0697b2cc9dddf9868853711'
-            '8b761e544767ad196c2119f76194c1459ddd859c81f72f32ee5a107a187c2e0f'
-            '15096772bcd9762326b5e955bda6c2fe6d5532bd2c94493b4f393b1d4f2b8d11'
+            '72f1fd755581ae24793c1d6a1721ea902172bebb89d2014977076595f6e059dc'
+            'df4eddd376fb926f962d092e74d72dbd54dfe6c2ddd0729c435c475f267df6a9'
+            'd78966983dfc9da65903c6023ee3f8aec25f11276967826bfa235e0f33b7028b'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
