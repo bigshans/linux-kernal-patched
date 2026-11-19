@@ -18,12 +18,8 @@ if [ -z ${_microarchitecture+x} ]; then
   _microarchitecture=0
 fi
 
-CONFIG_ASHMEM=m 
-CONFIG_ANDROID=y
-CONFIG_ANDROID_BINDER_IPC=m
-CONFIG_ANDROID_BINDERFS=n
-CONFIG_ANDROID_BINDER_DEVICES="binder,hwbinder,vndbinder"
-CONFIG_DRM_SIMPLEDRM=y
+# Android / binder support is applied via scripts/config in prepare().
+
 # _compiler=clang
 
 ## Disable NUMA since most users do not have multiple processors. Breaks CUDA/NvEnc.
@@ -44,7 +40,7 @@ fi
 
 ## Choose between GCC and CLANG config (default is GCC)
 ## Use the environment variable "_compiler=clang"
-if [ "${_compiler}" = "clang" ]; then
+if [ "${_compiler:-gcc}" = "clang" ]; then
   _compiler_flags="CC=clang HOSTCC=clang LLVM=1 LLVM_IAS=1"
 fi
 
@@ -52,13 +48,29 @@ fi
 # Possible values: config_x86-64-v1 (default) / config_x86-64-v2 / config_x86-64-v3 / config_x86-64-v4
 # This will be overwritten by selecting any option in microarchitecture script
 # Source files: https://github.com/xanmod/linux/tree/5.17/CONFIGS/xanmod/gcc
-# if [ -z ${_config+x} ]; then
+if [ -z ${_config+x} ]; then
   _config=config
-# fi
+fi
 
 # Compress modules with ZSTD (to save disk space)
 if [ -z ${_compress_modules+x} ]; then
-  _compress_modules=n
+  _compress_modules=y
+fi
+
+## BORE's base CPU slice lower bound (ns).
+## With HZ=1000 the effective base slice is DIV_ROUNDUP(value, 1ms) * 1ms:
+##   1000000 -> 1ms (lower latency), 2000000 -> 2ms (balanced, BORE default),
+##   3000000..4000000 -> thicker slices (more throughput, less responsiveness)
+if [ -z ${_min_base_slice_ns+x} ]; then
+  _min_base_slice_ns=2000000
+fi
+
+## Transparent Huge Pages sysfs default: always / madvise / never
+## madvise = 只对显式标记(MADV_HUGEPAGE)的内存用大页，RSS 更友好（默认）
+## always  = 内核自动对所有匿名内存用大页，偏性能但内存占用更大
+## never   = 完全不用大页（7.3+ 支持）
+if [ -z ${_thp+x} ]; then
+  _thp=madvise
 fi
 
 # Compile ONLY used modules to VASTLY reduce the number of modules built
@@ -83,14 +95,17 @@ fi
 pkgbase=linux-xanmod-bore-cjktty
 _major=7.3
 pkgver=${_major}.4
-_branch=7.x
+_branch="${_major%%.*}.x"
 xanmod=1
-_revision=
 # _sf_branch=edge
 _sf_branch=main
-_cjk_major=7.3.4
+_cjk_major=${pkgver}
+# BORE scheduler patch (upstream firelzrd). Versioned on purpose: stale copies
+# are never silently reused across kernel or BORE bumps.
+_bore_ver=7.0.1
+_bore_commit=715ea6fe8192ada3a0de6deb7015571bc638b5cc
 pkgrel=${xanmod}
-pkgdesc='Linux Xanmod.'
+pkgdesc='Linux Xanmod'
 url="http://www.xanmod.org/"
 arch=(x86_64)
 
@@ -105,17 +120,16 @@ makedepends=(
   python
   tar
   xz
+  zstd
 )
-if [ "${_compiler}" = "clang" ]; then
+if [ "${_compiler:-gcc}" = "clang" ]; then
   makedepends+=(clang llvm lld)
 fi
-options=('!strip')
-_srcname="linux-${pkgver}-xanmod${xanmod}"
-
+options=('!strip' '!debug' '!lto')
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
-        "patch-${pkgver}-xanmod${xanmod}${_revision}.xz::https://master.dl.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
+        "patch-${pkgver}-xanmod${xanmod}.xz::https://downloads.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
-        "0001-bore.patch"
+        "0001-bore-${pkgver}-${_bore_ver}.patch::https://raw.githubusercontent.com/firelzrd/bore-scheduler/${_bore_commit}/patches/testing/0001-linux7.3-rc2-bore-${_bore_ver}.patch"
         choose-gcc-optimization.sh)
 
 validpgpkeys=(
@@ -123,18 +137,11 @@ validpgpkeys=(
     '647F28654894E3BD457199BE38DBBDC86092693E' # Greg Kroah-Hartman
 )
 
-# Archlinux patches
-_commit="ec9e9a4219fe221dec93fa16fddbe44a34933d8d"
-_patches=()
-for _patch in ${_patches[@]}; do
-    source+=("${_patch}::https://raw.githubusercontent.com/archlinux/svntogit-packages/${_commit}/trunk/${_patch}")
-done
-
 sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
             'SKIP'
             '3dffaf5a372654fa0cf718b1a60e6a94afcd8ee931f78e5a180c37a403598d9d'
             'e70aacb66cf4f015fe83e91119705c5fc354ff7009fddb5dd2dec38e3a337bb7'
-            '2c0a00b6c0af136a143ab4c4c1de1f9cc66f372fda9191a03d3f0ebfdb8e48d5'
+            '59349771e5cde001b5456b29b9d302f5dca9cdbe60beb43d1161a85b21c1a82d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
@@ -145,27 +152,34 @@ prepare() {
   cd linux-${_major}
 
   # Apply Xanmod patch
-  patch -Np1 -i ../patch-${pkgver}-xanmod${xanmod}${_revision}
+  patch -Np1 --no-backup-if-mismatch -i ../patch-${pkgver}-xanmod${xanmod}
 
   msg2 "Setting version..."
   echo "-$pkgrel" > localversion.10-pkgrel
   echo "${pkgbase#linux-xanmod}" > localversion.20-pkgname
 
-  # Archlinux patches
+  # Apply remaining patches (cjktty CJK console + BORE scheduler)
   local src
   for src in "${source[@]}"; do
     src="${src%%::*}"
     src="${src##*/}"
     [[ $src = *.patch ]] || continue
+    if [[ $src == *bore* ]]; then
+      # XanMod already sets sysctl_sched_tunable_scaling to SCHED_TUNABLESCALING_NONE,
+      # while the pristine upstream BORE patch expects the upstream LOG default in its
+      # context. Restore that line so the upstream patch applies cleanly; the patch's
+      # #ifdef CONFIG_SCHED_BORE then selects NONE again for BORE builds.
+      sed -i 's/^\(unsigned int sysctl_sched_tunable_scaling = \)SCHED_TUNABLESCALING_NONE;/\1SCHED_TUNABLESCALING_LOG;/' kernel/sched/fair.c
+    fi
     msg2 "Applying patch $src..."
-    patch -Np1 < "../$src"
+    patch -Np1 --no-backup-if-mismatch < "../$src"
     msg2 "$src patched"
   done
 
   # Applying configuration
   cp -vf CONFIGS/x86_64/${_config} .config
   # enable LTO_CLANG_THIN
-  if [ "${_compiler}" = "clang" ]; then
+  if [ "${_compiler:-gcc}" = "clang" ]; then
     scripts/config --disable LTO_CLANG_FULL
     scripts/config --enable LTO_CLANG_THIN
     _LLVM=1
@@ -180,6 +194,26 @@ prepare() {
   scripts/config -d HZ_500
   scripts/config -e HZ_1000
   scripts/config --set-val HZ 1000
+
+  # Transparent Huge Pages policy (see _thp at the top)
+  case "$_thp" in
+    always)
+      scripts/config --disable CONFIG_TRANSPARENT_HUGEPAGE_MADVISE \
+                     --enable  CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS ;;
+    madvise)
+      scripts/config --disable CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS \
+                     --enable  CONFIG_TRANSPARENT_HUGEPAGE_MADVISE ;;
+    never)
+      scripts/config --disable CONFIG_TRANSPARENT_HUGEPAGE_ALWAYS \
+                     --disable CONFIG_TRANSPARENT_HUGEPAGE_MADVISE \
+                     --enable  CONFIG_TRANSPARENT_HUGEPAGE_NEVER ;;
+    *)
+      error "Invalid _thp='%s' (expected: always, madvise, never)" "$_thp"
+      exit 1 ;;
+  esac
+
+  # BORE base slice lower bound (see _min_base_slice_ns at the top)
+  scripts/config --set-val MIN_BASE_SLICE_NS ${_min_base_slice_ns}
 
   # Enable full tickless mode
   scripts/config -d HZ_PERIODIC
@@ -212,6 +246,7 @@ prepare() {
   scripts/config -e PREEMPT_BUILD
   scripts/config -d PREEMPT_NONE
   scripts/config -d PREEMPT_VOLUNTARY
+  scripts/config -d PREEMPT_LAZY
   scripts/config -e PREEMPT
   scripts/config -e PREEMPT_COUNT
   scripts/config -e PREEMPTION
@@ -224,6 +259,14 @@ prepare() {
   scripts/config --enable CONFIG_IKCONFIG \
                  --enable CONFIG_IKCONFIG_PROC
 
+  # Trim things that only add size / build time on a desktop build
+  scripts/config --disable CONFIG_KALLSYMS_ALL \
+                 --disable CONFIG_MODULE_SIG_ALL
+
+  # Prefer zstd for zswap (better speed/ratio trade-off than the default lzo)
+  scripts/config --disable CONFIG_ZSWAP_COMPRESSOR_DEFAULT_LZO \
+                 --enable  CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD
+
   scripts/config --module  CONFIG_ASHMEM
   scripts/config --enable  CONFIG_ANDROID
   scripts/config --set-str CONFIG_ANDROID_BINDER_DEVICES ""
@@ -234,11 +277,16 @@ prepare() {
   # User set. See at the top of this file
   if [ "$use_tracers" = "y" ]; then
     msg2 "Enabling CONFIG_FTRACE only if we are not compiling with clang..."
-    if [ "${_compiler}" = "gcc" ] || [ "${_compiler}q" = "q" ]; then
+    if [ "${_compiler:-gcc}" = "gcc" ]; then
       scripts/config --enable CONFIG_FTRACE \
                      --enable CONFIG_FUNCTION_TRACER \
                      --enable CONFIG_STACK_TRACER
     fi
+  else
+    msg2 "Disabling CONFIG_FTRACE / FUNCTION_TRACER / STACK_TRACER..."
+    scripts/config --disable CONFIG_FTRACE \
+                   --disable CONFIG_FUNCTION_TRACER \
+                   --disable CONFIG_STACK_TRACER
   fi
 
   if [ "$use_numa" = "n" ]; then
@@ -248,7 +296,8 @@ prepare() {
 
   # Compress modules by default (following Arch's kernel)
   if [ "$_compress_modules" = "y" ]; then
-    scripts/config --enable CONFIG_MODULE_COMPRESS_ZSTD
+    scripts/config --enable CONFIG_MODULE_COMPRESS \
+                   --enable CONFIG_MODULE_COMPRESS_ZSTD
   fi
 
   ## Use Arch Wiki TOMOYO configuration: https://wiki.archlinux.org/title/TOMOYO_Linux#Installation_2
@@ -311,7 +360,7 @@ prepare() {
 
 build() {
   cd linux-${_major}
-  make ${_compiler_flags} all -j 16
+  make ${_compiler_flags} all -j"$(nproc)"
   make -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
 }
 
@@ -341,8 +390,8 @@ _package() {
   echo "$pkgbase" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
 
   msg2 "Installing modules..."
-  ZSTD_CLEVEL=19 make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
-    DEPMOD=/doesnt/exist modules_install  # Suppress depmod
+  make INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 \
+    DEPMOD=/doesnt/exist ZSTD="zstd -19" modules_install  # Suppress depmod
 
   rm "$modulesdir"/build
 }
