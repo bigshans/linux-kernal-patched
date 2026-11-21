@@ -50,22 +50,22 @@ fetch linux-7.3.tar.xz \
   https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.3.tar.xz \
   https://mirrors.edge.kernel.org/pub/linux/kernel/v7.x/linux-7.3.tar.xz
 
-# XanMod 7.3.4 patch (SourceForge mirrors rotate; try several)
-fetch patch-7.3.4-xanmod1.xz \
-  3dffaf5a372654fa0cf718b1a60e6a94afcd8ee931f78e5a180c37a403598d9d \
-  https://downloads.sourceforge.net/project/xanmod/releases/main/7.3.4-xanmod1/patch-7.3.4-xanmod1.xz \
-  https://master.dl.sourceforge.net/project/xanmod/releases/main/7.3.4-xanmod1/patch-7.3.4-xanmod1.xz \
-  https://netix.dl.sourceforge.net/project/xanmod/releases/main/7.3.4-xanmod1/patch-7.3.4-xanmod1.xz \
-  https://versaweb.dl.sourceforge.net/project/xanmod/releases/main/7.3.4-xanmod1/patch-7.3.4-xanmod1.xz \
-  https://cytranet.dl.sourceforge.net/project/xanmod/releases/main/7.3.4-xanmod1/patch-7.3.4-xanmod1.xz \
-  https://sourceforge.net/projects/xanmod/files/releases/main/7.3.4-xanmod1/patch-7.3.4-xanmod1.xz/download
+# XanMod 7.3.5 patch (SourceForge mirrors rotate; try several)
+fetch patch-7.3.5-xanmod1.xz \
+  e2f783e5c16e60e444a173eece3351674448eeae03a7d7c353e7bb8b14c9fb24 \
+  https://downloads.sourceforge.net/project/xanmod/releases/main/7.3.5-xanmod1/patch-7.3.5-xanmod1.xz \
+  https://master.dl.sourceforge.net/project/xanmod/releases/main/7.3.5-xanmod1/patch-7.3.5-xanmod1.xz \
+  https://netix.dl.sourceforge.net/project/xanmod/releases/main/7.3.5-xanmod1/patch-7.3.5-xanmod1.xz \
+  https://versaweb.dl.sourceforge.net/project/xanmod/releases/main/7.3.5-xanmod1/patch-7.3.5-xanmod1.xz \
+  https://cytranet.dl.sourceforge.net/project/xanmod/releases/main/7.3.5-xanmod1/patch-7.3.5-xanmod1.xz \
+  https://sourceforge.net/projects/xanmod/files/releases/main/7.3.5-xanmod1/patch-7.3.5-xanmod1.xz/download
 
 # cjktty CJK console patch
-fetch cjktty-7.3.4.patch \
-  e70aacb66cf4f015fe83e91119705c5fc354ff7009fddb5dd2dec38e3a337bb7 \
-  https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v7.x/cjktty-7.3.4.patch \
-  https://cdn.jsdelivr.net/gh/bigshans/cjktty-patches@master/v7.x/cjktty-7.3.4.patch \
-  https://github.com/bigshans/cjktty-patches/raw/master/v7.x/cjktty-7.3.4.patch
+fetch cjktty-7.3.5.patch \
+  8f51deb31d5653596a387bf4f19f5af03ed7fb4faf88c46b10c812527eca9073 \
+  https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v7.x/cjktty-7.3.5.patch \
+  https://cdn.jsdelivr.net/gh/bigshans/cjktty-patches@master/v7.x/cjktty-7.3.5.patch \
+  https://github.com/bigshans/cjktty-patches/raw/master/v7.x/cjktty-7.3.5.patch
 
 # cjktty CJK 32x32 font data (same upstream repo, unversioned file pinned by commit)
 # No jsDelivr mirror here: it rejects files larger than 20 MiB.
@@ -75,7 +75,7 @@ fetch cjktty-add-cjk32x32-font-data.patch \
   https://github.com/bigshans/cjktty-patches/raw/b43d618da6d6536338761a5fc7c9c377c318fb9e/cjktty-add-cjk32x32-font-data.patch
 
 # BORE scheduler patch (pinned to a commit)
-fetch 0001-bore-7.3.4-7.0.1.patch \
+fetch 0001-bore-7.3.5-7.0.1.patch \
   59349771e5cde001b5456b29b9d302f5dca9cdbe60beb43d1161a85b21c1a82d \
   https://raw.githubusercontent.com/firelzrd/bore-scheduler/715ea6fe8192ada3a0de6deb7015571bc638b5cc/patches/testing/0001-linux7.3-rc2-bore-7.0.1.patch \
   https://cdn.jsdelivr.net/gh/firelzrd/bore-scheduler@715ea6fe8192ada3a0de6deb7015571bc638b5cc/patches/testing/0001-linux7.3-rc2-bore-7.0.1.patch

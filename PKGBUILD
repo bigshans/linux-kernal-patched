@@ -94,7 +94,7 @@ fi
 
 pkgbase=linux-xanmod-bore-cjktty
 _major=7.3
-pkgver=${_major}.4
+pkgver=${_major}.5
 _branch="${_major%%.*}.x"
 xanmod=1
 # _sf_branch=edge
@@ -144,8 +144,8 @@ validpgpkeys=(
 
 sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
             'SKIP'
-            '3dffaf5a372654fa0cf718b1a60e6a94afcd8ee931f78e5a180c37a403598d9d'
-            'e70aacb66cf4f015fe83e91119705c5fc354ff7009fddb5dd2dec38e3a337bb7'
+            'e2f783e5c16e60e444a173eece3351674448eeae03a7d7c353e7bb8b14c9fb24'
+            '8f51deb31d5653596a387bf4f19f5af03ed7fb4faf88c46b10c812527eca9073'
             'c648ff21f0a5714743bbae85d6c6e1ed2bf961b6bca976d4c6b4c8d3f6b2739f'
             '59349771e5cde001b5456b29b9d302f5dca9cdbe60beb43d1161a85b21c1a82d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
