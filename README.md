@@ -7,7 +7,7 @@ This is my personal linux kernel repository.
 ## Differences from Linux-Xanmod-Caucle
 
 - Add anbox config
-- Add cjktty
+- Add cjktty (with CJK 16x16 / 32x32 console fonts)
 - Add BORE CPU Scheduler
 - Added some make parameters to fit my computer's hardware
 - Tickless
@@ -74,6 +74,23 @@ env _min_base_slice_ns=1000000 makepkg -sfi
 
 ## Runtime knobs
 
+CJK console font:
+
+- The 16x16 CJK font is selected by default (`CONFIG_FONT_CJK_16x16`,
+  preference 20), which covers the BMP for normal-resolution consoles.
+- For high-resolution screens the 32x32 glyph data is built in
+  (`CONFIG_FONT_CJK_32x32` + `cjktty-add-cjk32x32-font-data.patch`). It is used
+  automatically once the console runs a 16x32 primary font. Select one at boot or
+  at runtime:
+
+``` shell
+# boot parameter (GRUB: GRUB_CMDLINE_LINUX_DEFAULT)
+fbcon=font:TER16x32
+
+# or at runtime on a VT
+sudo setfont ter-16x32
+```
+
 BORE can be toggled at runtime (no reboot, no rebuild):
 
 ``` shell
@@ -96,7 +113,8 @@ echo madvise | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
 - Aggressive tuning (native CPU, `always` THP, tickless full dynticks, etc.) should be
   passed via environment variables instead of changing the defaults.
 - It is recommended to keep the official `linux` package installed as a fallback kernel.
-- Version-specific sources (`patch-*-xanmod*.xz`, `cjktty-*.patch`, `0001-bore-*.patch`)
+- Version-specific sources (`patch-*-xanmod*.xz`, `cjktty-*.patch`,
+  `cjktty-add-cjk32x32-font-data.patch`, `0001-bore-*.patch`)
   are downloaded artifacts: `make purge` removes them and `make fetch` restores them.
   They are deliberately not committed, so a stale copy can never be reused across
   a version bump.

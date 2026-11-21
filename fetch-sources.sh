@@ -67,6 +67,13 @@ fetch cjktty-7.3.4.patch \
   https://cdn.jsdelivr.net/gh/bigshans/cjktty-patches@master/v7.x/cjktty-7.3.4.patch \
   https://github.com/bigshans/cjktty-patches/raw/master/v7.x/cjktty-7.3.4.patch
 
+# cjktty CJK 32x32 font data (same upstream repo, unversioned file pinned by commit)
+# No jsDelivr mirror here: it rejects files larger than 20 MiB.
+fetch cjktty-add-cjk32x32-font-data.patch \
+  c648ff21f0a5714743bbae85d6c6e1ed2bf961b6bca976d4c6b4c8d3f6b2739f \
+  https://raw.githubusercontent.com/bigshans/cjktty-patches/b43d618da6d6536338761a5fc7c9c377c318fb9e/cjktty-add-cjk32x32-font-data.patch \
+  https://github.com/bigshans/cjktty-patches/raw/b43d618da6d6536338761a5fc7c9c377c318fb9e/cjktty-add-cjk32x32-font-data.patch
+
 # BORE scheduler patch (pinned to a commit)
 fetch 0001-bore-7.3.4-7.0.1.patch \
   59349771e5cde001b5456b29b9d302f5dca9cdbe60beb43d1161a85b21c1a82d \

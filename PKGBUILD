@@ -100,6 +100,10 @@ xanmod=1
 # _sf_branch=edge
 _sf_branch=main
 _cjk_major=${pkgver}
+# CJK 32x32 font data patch (upstream bigshans/cjktty-patches, not versioned
+# alongside the kernel). Pinned to the last commit touching the file so the
+# 44 MiB download is reproducible.
+_cjk_font_commit=b43d618da6d6536338761a5fc7c9c377c318fb9e
 # BORE scheduler patch (upstream firelzrd). Versioned on purpose: stale copies
 # are never silently reused across kernel or BORE bumps.
 _bore_ver=7.0.1
@@ -129,6 +133,7 @@ options=('!strip' '!debug' '!lto')
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "patch-${pkgver}-xanmod${xanmod}.xz::https://downloads.sourceforge.net/project/xanmod/releases/${_sf_branch}/${pkgver}-xanmod${xanmod}/patch-${pkgver}-xanmod${xanmod}.xz"
         "https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v${_branch}/cjktty-${_cjk_major}.patch"
+        "cjktty-add-cjk32x32-font-data.patch::https://raw.githubusercontent.com/bigshans/cjktty-patches/${_cjk_font_commit}/cjktty-add-cjk32x32-font-data.patch"
         "0001-bore-${pkgver}-${_bore_ver}.patch::https://raw.githubusercontent.com/firelzrd/bore-scheduler/${_bore_commit}/patches/testing/0001-linux7.3-rc2-bore-${_bore_ver}.patch"
         choose-gcc-optimization.sh)
 
@@ -141,6 +146,7 @@ sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
             'SKIP'
             '3dffaf5a372654fa0cf718b1a60e6a94afcd8ee931f78e5a180c37a403598d9d'
             'e70aacb66cf4f015fe83e91119705c5fc354ff7009fddb5dd2dec38e3a337bb7'
+            'c648ff21f0a5714743bbae85d6c6e1ed2bf961b6bca976d4c6b4c8d3f6b2739f'
             '59349771e5cde001b5456b29b9d302f5dca9cdbe60beb43d1161a85b21c1a82d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
 
@@ -189,6 +195,13 @@ prepare() {
   msg2 "Setting features for desktop use..."
   scripts/config --set-val CONFIG_BLK_DEV_LOOP_MIN_COUNT 0 \
                  --enable SCHED_BORE
+
+  # CJK console fonts (16x16 has the highest preference, so it is picked by
+  # default). The 32x32 glyph data is used automatically once the console runs
+  # a 16x32 primary font, e.g. boot with fbcon=font:TER16x32 or run
+  # `setfont ter-16x32`. CONFIG_FONT_TER16x32 is already enabled by XanMod.
+  scripts/config --enable CONFIG_FONT_CJK_16x16 \
+                 --enable CONFIG_FONT_CJK_32x32
 
   # Change tick rate to 1000.
   scripts/config -d HZ_500
