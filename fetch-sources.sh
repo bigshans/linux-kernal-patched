@@ -62,7 +62,7 @@ fetch patch-7.3.5-xanmod1.xz \
 
 # cjktty CJK console patch
 fetch cjktty-7.3.5.patch \
-  8f51deb31d5653596a387bf4f19f5af03ed7fb4faf88c46b10c812527eca9073 \
+  49174ddbd1a80d19593240c2b782b8d5ce028c37a4f445ce40230fcba3f57680 \
   https://raw.githubusercontent.com/bigshans/cjktty-patches/master/v7.x/cjktty-7.3.5.patch \
   https://cdn.jsdelivr.net/gh/bigshans/cjktty-patches@master/v7.x/cjktty-7.3.5.patch \
   https://github.com/bigshans/cjktty-patches/raw/master/v7.x/cjktty-7.3.5.patch

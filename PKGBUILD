@@ -145,7 +145,7 @@ validpgpkeys=(
 sha256sums=('87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953'
             'SKIP'
             'e2f783e5c16e60e444a173eece3351674448eeae03a7d7c353e7bb8b14c9fb24'
-            '8f51deb31d5653596a387bf4f19f5af03ed7fb4faf88c46b10c812527eca9073'
+            '49174ddbd1a80d19593240c2b782b8d5ce028c37a4f445ce40230fcba3f57680'
             'c648ff21f0a5714743bbae85d6c6e1ed2bf961b6bca976d4c6b4c8d3f6b2739f'
             '59349771e5cde001b5456b29b9d302f5dca9cdbe60beb43d1161a85b21c1a82d'
             '1ac18cad2578df4a70f9346f7c6fccbb62f042a0ee0594817fdef9f2704904ee')
@@ -373,6 +373,16 @@ prepare() {
 
 build() {
   cd linux-${_major}
+
+  # makepkg 会导出发行版硬化用的 CFLAGS（含 -Werror=format-security），它们会
+  # 漏进 kernel 的 tools/ 用户态构建。bpftool 的 bootstrap 会用
+  #   $(filter-out -W -Wall -Wextra -Wformat%,...)
+  # 过滤 HOST_CFLAGS，把配对的 -Wformat 一并删掉，只剩 -Werror=format-security，
+  # 于是 tools/lib/bpf 解析阶段探测 LP64 时（make 的 $(shell $(CC) $(CFLAGS) -E)）
+  # 会报：cc1: error: '-Wformat-security' ignored without '-Wformat'
+  # 内核 kbuild 本身不使用环境变量 CFLAGS，这里直接丢弃，让 tools/ 用上游默认值。
+  unset CFLAGS CXXFLAGS
+
   make ${_compiler_flags} all -j"$(nproc)"
   make -C tools/bpf/bpftool vmlinux.h feature-clang-bpf-co-re=1
 }
